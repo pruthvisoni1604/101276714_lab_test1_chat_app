@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Wechat Signup</title>
+      <link rel="stylesheet" href="css/signup.css">
+   </head>
+
+   <form action="" method="get">
+    <h1>Welcome to Wechat</h1><br/>
+    <h2>Lets sign up!</h2>
+    
+    <span class="input"></span>
+    <input id = "username" type="text" name="username" placeholder="User name" autocomplete="off" value="" />
+    <span class="input"></span>
+    <input id = "fname" type="text" name="fname" placeholder="First name" autocomplete="off" value="" />
+    <span class="input"></span>
+    <input id = "lname" type="text" name="lname" placeholder="Last name" autocomplete="off" value="" />
+    <span class="input"></span>
+    <input type="password" name="password" id="password" placeholder="Password" title="Password min 8 characters. At least one UPPERCASE and one lowercase letter" required pattern="(?=^.{8,}$)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"/>
+    <button type="submit" value="Sign Up" title="Submit form"  onclick="myFunction()" class="icon-arrow-right"></button>
+    q
+  </form>
+
+   <script>
+
+        function myFunction() {
+            window.location.href="html/login.html";
+        }
+
+   </script>
+   </html>

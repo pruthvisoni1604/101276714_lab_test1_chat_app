@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Wechat Login</title>
+      <link rel="stylesheet" href="../css/list.css">
+   </head>
+
+
+   <h1>Choose the room you would like to chat on</h1>
+
+    <div>
+        <button type="button" name="button1" onclick="news()" value="News"  > News ></button>
+        <p></p>
+        <button type="button" name="button2" onclick="covid()" value="Covid - 19" > Covid - 19 ></button>
+        <p></p>
+        <button type="button" name="button3" onclick="nodejs()" value="NodeJs"  > NodeJs ></button>
+    </div>
+
+
+   <script src = "/socket.io/socket.io.js"></script>
+   <script>
+       function news() {
+            window.location.href="../html/chat.html";
+            room = document.getElementsByName('button1').value
+            client.emit('joinroom', room)
+        }
+
+        function covid() {
+            window.location.href="../html/chat.html";
+            room = document.getElementsByName('button2').value
+            client.emit('joinroom', room)
+        }
+
+        function nodejs() {
+            window.location.href="../html/chat.html";
+            room = document.getElementsByName('button3').value
+            client.emit('joinroom', room)
+        }
+
+   </script>

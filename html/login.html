@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Wechat Login</title>
+      <link rel="stylesheet" href="../css/login.css">
+   </head>
+
+   <form action="" method="get">
+    <h1>Welcome Back!!</h1><br/>
+    <h2>Login</h2>
+    
+    <span class="input"></span>
+    <input id = "username" type="text" name="username" placeholder="User name" value="" />
+    <span class="input"></span>
+    <input type="password" name="password" id="password" placeholder="Password" title="Password min 8 characters. At least one UPPERCASE and one lowercase letter" required pattern="(?=^.{8,}$)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"/>
+    <button type="submit" value="Sign Up" title="Submit form" onclick="myfunction()" > Lets chat</button>
+    
+  </form>
+
+   <script>
+      // for form validation
+        var unsupportedBrowsers = false;
+        if ((navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) || (navigator.userAgent.match(/MSIE\s(?!10)/))) {
+        unsupportedBrowsers = true;
+        }
+
+        function myFunction() {
+            window.location.href="../html/list.html";
+        }
+
+   </script>
+</html>
