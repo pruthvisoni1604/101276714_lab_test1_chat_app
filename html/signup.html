@@ -1,32 +1,51 @@
-
 <!DOCTYPE html>
-<html>
-   <head>
-      <title>Wechat Signup</title>
-      <link rel="stylesheet" href="css/signup.css">
-   </head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>🔥Sign up</title>
+  <link rel="stylesheet" href="../css/signup.css">
+</head>
+<body>
 
-   <form action="" method="get">
-    <h1>Welcome to Wechat</h1><br/>
-    <h2>Lets sign up!</h2>
+    <h1>Welcome to 🔥HotChat App</h1>
+    <div class="signupFrm">
+        <form action="" method="get" class="form">
+          <h1 class="title">Sign up</h1>
     
-    <span class="input"></span>
-    <input id = "username" type="text" name="username" placeholder="User name" autocomplete="off" value="" />
-    <span class="input"></span>
-    <input id = "fname" type="text" name="fname" placeholder="First name" autocomplete="off" value="" />
-    <span class="input"></span>
-    <input id = "lname" type="text" name="lname" placeholder="Last name" autocomplete="off" value="" />
-    <span class="input"></span>
-    <input type="password" name="password" id="password" placeholder="Password" title="Password min 8 characters. At least one UPPERCASE and one lowercase letter" required pattern="(?=^.{8,}$)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"/>
-    <button type="submit" value="Sign Up" title="Submit form"  onclick="myFunction()" class="icon-arrow-right"></button>
-    q
-  </form>
+          <div class="inputContainer">
+            <input type="text" class="input" placeholder="Username">
+            <label class="label">User Name</label>
+          </div>
+    
+          <div class="inputContainer">
+            <input type="text" class="input" placeholder="First Name">
+            <label class="label">First Name</label>
+          </div>
 
-   <script>
+          <div class="inputContainer">
+            <input type="text" class="input" placeholder="Last Name">
+            <label class="label">Last Name</label>
+          </div>
+    
+          <div class="inputContainer">
+            <input type="text" class="input" placeholder="a">
+            <label class="label">Password</label>
+          </div>
+    
+          <button type="submit" class="submitBtn" onclick="myFunction()">Sign Up</button>
+        </form>
+      </div>
 
-        function myFunction() {
-            window.location.href="html/login.html";
-        }
+</body>
 
-   </script>
-   </html>
+<script>
+
+      function myFunction() {
+          window.location.href="../html/login.html";
+      }
+
+ </script>
+
+</html>

@@ -1,33 +1,43 @@
-
 <!DOCTYPE html>
-<html>
-   <head>
-      <title>Wechat Login</title>
-      <link rel="stylesheet" href="../css/login.css">
-   </head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>🔥Log in</title>
+  <link rel="stylesheet" href="../css/login.css">
+</head>
+<body>
 
-   <form action="" method="get">
-    <h1>Welcome Back!!</h1><br/>
-    <h2>Login</h2>
     
-    <span class="input"></span>
-    <input id = "username" type="text" name="username" placeholder="User name" value="" />
-    <span class="input"></span>
-    <input type="password" name="password" id="password" placeholder="Password" title="Password min 8 characters. At least one UPPERCASE and one lowercase letter" required pattern="(?=^.{8,}$)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"/>
-    <button type="submit" value="Sign Up" title="Submit form" onclick="myfunction()" > Lets chat</button>
+    <div class="loginFrm">
+        <h1 style="margin-right:10%;">🔥HotChat App Welcomes you back!</h1>
+        <form action="" method="get" class="form">
+          <h1 class="title">Log in</h1>
     
-  </form>
+          <div class="inputContainer">
+            <input type="text" class="input" placeholder="Username">
+            <label class="label">User Name</label>
+          </div>
+    
+          <div class="inputContainer">
+            <input type="text" class="input" placeholder="a">
+            <label class="label">Password</label>
+          </div>
+    
+          <p>Dont have an account ? click <a href="../html/index.html">here</a></p>
+          <button type="submit" class="submitBtn" onclick="myFunction()">Log in</button>
+        </form>
+      </div>
 
-   <script>
-      // for form validation
-        var unsupportedBrowsers = false;
-        if ((navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) || (navigator.userAgent.match(/MSIE\s(?!10)/))) {
-        unsupportedBrowsers = true;
-        }
+</body>
 
-        function myFunction() {
-            window.location.href="../html/list.html";
-        }
+<script>
 
-   </script>
+      function myFunction() {
+          window.location.href="../html/menu.html";
+      }
+
+ </script>
+
 </html>
