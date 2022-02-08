@@ -4,20 +4,16 @@ const http = require('http').createServer(app)
 const { Console } = require('console')
 const cors = require('cors')
 const PORT = 3000
+const express = require('express');
+const mongoose = require('mongoose');
+const chatRoomRouter = require('./routes/ChatAppRoutes.js');
 
 //Create Server Socket
 const io = require('socket.io')(http)
-
-app.use(cors())
+app.use(cors()) 
 //Create user list
 users = []
-
-app.get("/", (req, res) => {
-    res.sendFile(__dirname + '/html/chat.html')
-})
-
 var roomName = 'test'
-
 //Accept new request
 io.on('connection', (socket) => {
     console.log('Connected ')
@@ -79,7 +75,18 @@ io.on('connection', (socket) => {
 })
 
 
-http.listen(PORT, () => {
-    console.log(`Server started at ${PORT}`)
-})
+app.use(express.json()); // Make sure it comes back as json
 
+//TODO - Replace you Connection String here
+mongoose.connect('mongodb+srv://gbc:pruthvi@sa.dubue.mongodb.net/db_f2021_comp3123?retryWrites=true&w=majority', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(success => {
+  console.log('Success Mongodb connection')
+}).catch(err => {
+  console.log('Error Mongodb connection')
+});
+
+app.use(chatRoomRouter);
+
+app.listen(3000, () => { console.log('Server is running...') });
