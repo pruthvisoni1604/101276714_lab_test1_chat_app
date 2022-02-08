@@ -6,6 +6,64 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>🔥Chat </title>
         <link rel="stylesheet" href="../css/chat.css">
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+            /* Get rid of all default margins/paddings. Set typeface */
+            body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            font-family: "lato", sans-serif;
+            }
+            input{
+                font-size: 20px;
+                padding: 10px 15px;
+                border-radius: 50px;
+                width: 80%;
+                position: absolute;
+                bottom: 15px;
+                left: 15px;
+            }
+
+            .close{
+                float: right;
+                margin: 5px;
+                font-size: 20px;
+                border: none;
+                background-color: transparent;
+                height: 30px;
+                width: 30px;
+                border-radius: 50px;
+                color: red;
+
+            }
+
+            .close:hover{
+                color: white;
+                background-color: red;
+            }
+
+            .Btn {
+                position: absolute;
+                left: 89%;
+                right: 10px;
+                bottom: 15px;
+                width: 10%;
+                font-size: 22px;
+                padding: 10px 15px;
+                border-radius: 50px;
+                border: none;
+                background-color: #6e38d3;
+                color: azure;
+            }
+            
+            .Btn:hover {
+                background-color: #310d75;
+            }
+
+        </style>
     </head>
     <body>
 
@@ -21,11 +79,11 @@
     <script>
 
         function myFunction() {
-            window.location.href="../html/login.html";
+            window.location.href="/";
         }
 
         function close() {
-            window.location.href="../html/menu.html";
+            window.location.href="/";
         }
 
     </script>

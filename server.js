@@ -6,7 +6,10 @@ const cors = require('cors')
 const PORT = 3000
 const express = require('express');
 const mongoose = require('mongoose');
-const chatRoomRouter = require('./routes/ChatAppRoutes.js');
+
+const userModel = require(__dirname + '/models/User');
+const gmModel = require(__dirname + '/models/GroupMessage');
+const pmModel = require(__dirname + '/models/PrivateMessage');
 
 //Create Server Socket
 const io = require('socket.io')(http)
@@ -87,6 +90,45 @@ mongoose.connect('mongodb+srv://gbc:pruthvi@sa.dubue.mongodb.net/db_f2021_comp31
   console.log('Error Mongodb connection')
 });
 
-app.use(chatRoomRouter);
+
+//http://localhost:3000/login
+app.get('/login', async (req, res) => {
+    const users = await userModel.find({});
+    res.sendFile(__dirname + '/html/login.html')
+});
+
+//http://localhost:3000/
+app.get('/', async (req, res) => {
+  //const users = await userModel.find({});
+  res.sendFile(__dirname + '/html/index.html')
+});
+
+//http://localhost:3000/chat/covid
+app.get('/chat/:room', async (req, res) => {
+  //const users = await userModel.find({});
+  res.sendFile(__dirname + '/html/chat.html')
+});
+
+//http://localhost:3000/signin
+app.get('/signup', async (req, res) => {
+  //const users = await userModel.find({});
+  res.sendFile(__dirname + '/html/signup.html')
+});
+  
+//http://localhost:3000
+app.post('/', async (req, res) => {
+    const user = new userModel(req.body);
+    try {
+      await user.save((err) => {
+        if(err){
+          res.send(err)
+        }else{
+          res.send(user);
+        }
+      });
+    } catch (err) {
+      res.status(500).send(err);
+    }
+});
 
 app.listen(3000, () => { console.log('Server is running...') });
