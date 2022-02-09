@@ -119,27 +119,32 @@
     h1{
         text-align: center;
     }
+    #err{
+      color: red;
+      position: absolute;
+      padding: 15px;
+    }
   </style>
 </head>
-<body>
+<body  onload="checkForErr()">
 
     
     <div class="loginFrm">
-        <h1 style="margin-right:10%;">🔥HotChat App Welcomes you back!</h1>
-        <form action="/" method="get" class="form" >
+        <form action="/" method="post" class="form" >
           <h1 class="title">Log in</h1>
     
           <div class="inputContainer">
-            <input type="text" class="input" placeholder="Username">
+            <input type="text" class="input" placeholder="Username" name="username" required>
             <label class="label">User Name</label>
           </div>
     
           <div class="inputContainer">
-            <input type="text" class="input" placeholder="a">
+            <input type="password" class="input" placeholder="password" name="password" required>
             <label class="label">Password</label>
           </div>
     
-          <p>Don't have an account? <a href="/signin">click here</a></p>
+          <p>Don't have an account? <a href="/signup">click here</a></p>
+          <div id="err"></div>
           <button type="submit" class="submitBtn">Log in</button>
         </form>
       </div>
@@ -147,11 +152,16 @@
 </body>
 
 <script>
+      function checkForErr(){
+        var objUrlParams = new URLSearchParams(window.location.search);
+        if(objUrlParams.get('wrong')=="uname"){
+          document.getElementById('err').innerHTML="Username is Incorrect!"
+        }
+        else if(objUrlParams.get('wrong')=="pass"){
+          document.getElementById('err').innerHTML="Password is incorrect!"
 
-      function myFunction() {
-          window.location.href="/";
+        }
       }
-
  </script>
 
 </html>

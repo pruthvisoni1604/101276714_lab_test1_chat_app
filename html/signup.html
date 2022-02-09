@@ -115,14 +115,21 @@
     h1{
         text-align: center;
     }
+    #err{
+      color: red;
+      position: absolute;
+      padding: 15px;
+    }
   </style>
+  <script>
+  </script>
 </head>
-<body>
+<body onload="checkForErr()">
 
     <h1>Welcome to SimpleChat</h1>
     <div class="signupFrm">
         <form action="/login" method="post" class="form">
-          <h1 class="title">Sign up</h1>
+          <h1 class="title">Sign Up</h1>
     
           <div class="inputContainer">
             <input type="text" class="input" name="username" placeholder="Username" required>
@@ -143,19 +150,21 @@
             <input type="password" class="input" name="password" placeholder="password" required minlength="5">
             <label class="label">Password</label>
           </div>
-    
-          <input type="submit" class="submitBtn" value="Signup">
+          <div id="err">
+          </div>
+          <input type="submit" class="submitBtn" value="Submit">
         </form>
       </div>
 
 </body>
 
 <script>
-
-      function myFunction() {
-          window.location.href="../html/login.html";
+      function checkForErr(){
+        var objUrlParams = new URLSearchParams(window.location.search);
+        if(objUrlParams.get('err')=="username"){
+          document.getElementById('err').innerHTML="Username is Invalid!"
+        }
       }
-
  </script>
 
 </html>

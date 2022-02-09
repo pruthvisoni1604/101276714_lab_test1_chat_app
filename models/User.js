@@ -39,7 +39,6 @@ UserSchema.post('validate', (doc) => {
 
 UserSchema.post('save', (doc) => {
   console.log('%s has been saved', doc._id);
-  console.log('done')
 });
 
 UserSchema.post('remove', (doc) => {

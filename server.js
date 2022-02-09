@@ -95,7 +95,7 @@ mongoose.connect('mongodb+srv://gbc:pruthvi@sa.dubue.mongodb.net/db_f2021_comp31
   console.log('Error Mongodb connection')
 });
 
-//http://localhost:3000/signin
+//http://localhost:3000/signup
 app.get('/signup', async (req, res) => {
   res.sendFile(__dirname + '/html/signup.html')
 });
@@ -109,35 +109,46 @@ app.post('/login', async (req, res) => {
   try {
     await user.save((err) => {
       if(err){
-        console.log("1")
-        if(err.code === 11000){
-        console.log("2")
-
-          res.sendFile(__dirname + '/html/signup.html')
-          
-          console.log("3")
-
-        }
+          if (err.code === 11000) {
+             return res.redirect('/signup?err=username')
+          }
+        
         res.send(err)
-        console.log("4")
-
       }else{
         res.sendFile(__dirname + '/html/login.html')
-        console.log("5")
-
       }
     });
   } catch (err) {
     res.status(500).send(err);
-    console.log("10")
-
   }
 });
 
 //http://localhost:3000/
 app.get('/', async (req, res) => {
-  //const users = await userModel.find({});
   res.sendFile(__dirname + '/html/index.html')
+});
+app.post('/', async (req, res) => {
+  const username=req.body.username
+  const password=req.body.password
+
+  const user = await userModel.find({username:username});
+
+  try {
+    if(user.length != 0){
+      if(user[0].password==password){
+        return res.redirect('/')
+      }
+      else{
+        return res.redirect('/login?wrong=pass')
+      }
+    }else{
+      return res.redirect('/login?wrong=uname')
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
+  
+  
 });
 
 //http://localhost:3000/chat/covid
