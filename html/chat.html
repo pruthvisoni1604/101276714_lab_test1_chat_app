@@ -5,81 +5,120 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>🔥Chat </title>
-        <link rel="stylesheet" href="../css/chat.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
             @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 
-            /* Get rid of all default margins/paddings. Set typeface */
+            html{
+                margin: 0;
+                padding: 0;
+            }
             body {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            background-color: white;
-            font-family: "lato", sans-serif;
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+                background-color: white;
+                font-family: "lato", sans-serif;
+                height: 100%;
+                width: 100%;
+                position: absolute;
             }
             input{
                 font-size: 20px;
                 padding: 10px 15px;
                 border-radius: 50px;
                 width: 80%;
-                position: absolute;
                 bottom: 15px;
                 left: 15px;
             }
-
-            .close{
-                float: right;
-                margin: 5px;
-                font-size: 20px;
-                border: none;
-                background-color: transparent;
-                height: 30px;
-                width: 30px;
-                border-radius: 50px;
-                color: red;
-
+            button{
+                min-width: 100px;
             }
-
-            .close:hover{
-                color: white;
-                background-color: red;
-            }
-
             .Btn {
-                position: absolute;
                 left: 89%;
                 right: 10px;
                 bottom: 15px;
                 width: 10%;
-                font-size: 22px;
+                font-size: 22px; 
                 padding: 10px 15px;
                 border-radius: 50px;
                 border: none;
-                background-color: #6e38d3;
+                background-color: lightseagreen;
                 color: azure;
             }
             
             .Btn:hover {
-                background-color: #310d75;
+                background-color: seagreen;
             }
-
+            #room{
+                padding: 0px 30px;
+                background-color: lightseagreen;
+                display: flex
+            }
+            i{
+                align-items: center;
+                margin: auto 0;
+            }
+            h1{
+                margin: 20px;
+            }
+            #in{
+                padding: 20px;
+                display: flex;
+                justify-content: space-around;
+            }
         </style>
     </head>
-    <body>
+    <body onload="">
+        <div id = "error-container"></div>
 
-            <div>
-                <input type="text"  placeholder="Type here">
-            </div>
-            <button type="button" class="close" onclick="close()"> X </button>
-            
-            <button type="submit" class="Btn" onclick="myFunction()">Send</button>
+        <div id="room">
+            <i class="fa fa-arrow-left" style="font-size:36px" onclick="close()"></i>
+            <h1><b>News</b></h1>
+        </div>
+        <div id="in">
+            <input type="text" id="message" name="message" placeholder="Type here">
+                
+            <button class="Btn" type="button" name="button" onclick="sendMessage()">Send</button>
+        </div>
+        <div id="message-container">
 
+        </div>
     </body>
-
+    <script src = "/socket.io/socket.io.js"></script>
     <script>
+        const client = io()
+        //client.emit('message',{name : 'Sahay'})
+        var mc=document.getElementById('message-container')
 
-        function myFunction() {
-            window.location.href="/";
+        client.on('welcome', (data) =>{
+            console.log(data)
+            mc.innerHTML += '<div>' + data + '</div>'
+        })
+
+        client.on('newMessage', (message) =>{
+            var temp=mc.innerHTML;
+            mc.innerHTML='<div>' + message + '</div>'
+            mc.innerHTML+=temp
+        })
+        client.on('newRoomMessage',(message)=>{
+
+        })
+        //function setUsername(){
+           // var objUrlParams = new URLSearchParams(window.location.search);
+            //client.emit('newUser', objUrlParams.get("uname"))
+            //joinRoom();
+        //}
+
+        function joinRoom(){
+            console.log()
+            client.emit('joinroom', 'news')
+        }
+
+        function sendMessage(){
+            client.emit('message', 
+            { room: 'news',
+                message: document.getElementById('message').value})
         }
 
         function close() {

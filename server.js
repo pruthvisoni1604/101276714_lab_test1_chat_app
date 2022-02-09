@@ -11,70 +11,71 @@ const userModel = require(__dirname + '/models/User');
 const gmModel = require(__dirname + '/models/GroupMessage');
 const pmModel = require(__dirname + '/models/PrivateMessage');
 
+
 //Create Server Socket
 const io = require('socket.io')(http)
+
 app.use(cors()) 
 //Create user list
 users = []
 var roomName = 'test'
-//Accept new request
+
 io.on('connection', (socket) => {
-    console.log('Connected ')
-    
-    socket.emit('welcome', 'Welcome to Socket Programming : ' + socket.id)
-    //console.log(socket)
+  console.log('Connected ')
+  
+  socket.emit('welcome', 'Welcome to Socket Programming : ' + socket.id)
+  //console.log(socket)
 
-    //Custom message event to socket
-    socket.on('message', (data) => {
-        console.log(data)
-        if(data.room == ''){
-            console.log(`Room Name: ${data.room}`)
-            //socket.broadcast.emit('newMessage', data.message)
-            io.emit('newMessage', socket.id + ' : ' + data.message)
-        }else{
-            ///socket.broadcast.to(data.room).emit('newMessage', data.message)
-            io.to(data.room).emit('newMessage', socket.id +' : ' + data.message)
-        }
-        //These will send to current/sending client
-        //socket.emit('newMessage', data)
+  //Custom message event to socket
+  socket.on('message', (data) => {
+      console.log(data)
 
-        //These will send to all connected client
-        //io.sockets.emit('newMessage', data)
+      if(data.room == '' || data.room==undefined){
+          
+          console.log(data.message)
+          io.emit('newMessage', socket.id + ' : ' + data.message)
+      }else{
+        console.log(`Room Name: ${data.room}`)
+        console.log(socket.id +' : ' + data.message)
+        io.to(data.room).emit('newMessage', socket.id +' : ' + data.message)
+      }
+      //These will send to current/sending client
+      //socket.emit('newMessage', data)
 
-        //This will send to all except sender
-        //socket.broadcast.emit('newMessage', data)
-        
-        //this send to the sender and the client
-        //io.to(roomName).emit('newMessage', data)
-        
+      //These will send to all connected client
+      //io.sockets.emit('newMessage', data)
 
-    })
+      //this send to the sender and the client
+      //io.to(roomName).emit('newMessage', data)
+      
 
-    //Get User name
-    socket.on('newUser', (name) => {
-        console.log(users)
-        console.log(name)
+  })
 
-        if(users.includes(name)){
-            name = users[i]
-            users.push(name)
-        }else{
-            users.push(name)
-        }
-        socket.id = name
-    })
+  //Get User name
+  socket.on('newUser', (name) => {
+      console.log(users)
+      console.log(name)
+
+      if(users.includes(name)){
+          name = users[i]
+          users.push(name)
+      }else{
+          users.push(name)
+      }
+      socket.id = name
+  })
 
 
-    //Group/Room Join
-    socket.on('joinroom', (room) => {
-        socket.join(room)
-        roomName = room
-    })
+  //Group/Room Join
+  socket.on('joinroom', (room) => {
+      socket.join(room)
+      roomName = room
+  })
 
-    //Disconnected
-    socket.on('disconnect', () => {
-        console.log(`${socket.id} disconnected`)
-    })
+  //Disconnected
+  socket.on('disconnect', () => {
+      console.log(`${socket.id} disconnected`)
+  })
 })
 
 
@@ -83,6 +84,7 @@ app.use(
     extended: true
   })
 )
+
 app.use(express.json()); // Make sure it comes back as json
 
 //TODO - Replace you Connection String here
@@ -157,37 +159,7 @@ app.get('/chat/:room', async (req, res) => {
   res.sendFile(__dirname + '/html/chat.html')
 });
 
+http.listen(PORT, () => {
+  console.log(`Server started at ${PORT}`)
+})
 
-
-//http://localhost:3000/signedup
-app.post('/a', async (req, res) => {
-  console.log("post")
-  console.log(req.body)
-  try {
-      if(err){
-        res.send(err)
-      }else{
-        res.send("user");
-      }
-  } catch (err) {
-    res.status(500).send(err);
-  }
-});
-
-//http://localhost:3000
-app.post('/', async (req, res) => {
-    const user = new userModel(req.body);
-    try {
-      await user.save((err) => {
-        if(err){
-          res.send(err)
-        }else{
-          res.send(user);
-        }
-      });
-    } catch (err) {
-      res.status(500).send(err);
-    }
-});
-
-app.listen(3000, () => { console.log('Server is running...') });
