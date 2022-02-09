@@ -30,22 +30,24 @@ io.on('connection', (socket) => {
       if(data.room == '' || data.room==undefined){
           io.emit('newMessage', socket.id + ' : ' + data.message)
       }else{
-        console.log(data)
-        console.log(socket)
         
         io.to(data.room).emit('newMessage', socket.id +' : ' + data.message)
-        const gm = new gmModel({from_user:socket.id,room:data.room,message:data.message});
+        if(data.room=='news'||data.room=='covid'||data.room=='nodeJs'){
+          const gm = new gmModel({from_user:socket.id,room:data.room,message:data.message});
           try {
-            gm.save((err) => {
-              if(err){
-                console.log(err)
-              }else{
-                //res.sendFile(__dirname + '/html/login.html')
-              }
-            });
+            gm.save();
           } catch (err) {
             console.log(err);
           }
+        }
+        else{
+          const pm= new pmModel({from_user:socket.id,to_user:room,message:data.message})
+          try {
+            pm.save();
+          } catch (err) {
+            console.log(err);
+          }
+        }
       }
       //These will send to current/sending client
       //socket.emit('newMessage', data)
@@ -61,30 +63,25 @@ io.on('connection', (socket) => {
 
   //Get User name
   socket.on('newUser', (name) => {
-      console.log(users)
-      console.log(name)
-
-      if(users.includes(name)){
-          name = users[i]
-          users.push(name)
-      }else{
+      if(!users.includes(name)){
           users.push(name)
       }
       socket.id = name
   })
-
 
   //Group/Room Join
   socket.on('joinroom', (room) => {
       socket.join(room)
       roomName = room
       socket.currentRoom = room;
+      const msg = gmModel.find({room: room}).sort({'date_sent': 'desc'}).limit(10);
+      socket.msg=msg
   })
   socket.on('leaveRoom', () =>{
-    socket.leave(socket.currentRoom);
-    socket.currentRoom = null;
-    console.log(socket.rooms);
-})
+      socket.leave(socket.currentRoom);
+      socket.currentRoom = null;
+      console.log(socket.rooms);
+  })
   //Disconnected
   socket.on('disconnect', () => {
       console.log(`${socket.id} disconnected`)
@@ -151,7 +148,7 @@ app.post('/', async (req, res) => {
   try {
     if(user.length != 0){
       if(user[0].password==password){
-        return res.redirect('/')
+        return res.redirect('/?uname='+username)
       }
       else{
         return res.redirect('/login?wrong=pass')
@@ -170,12 +167,15 @@ app.post('/', async (req, res) => {
 app.get('/chat/:room', async (req, res) => {
   const room = req.params.room
   const msg = await gmModel.find({room: room}).sort({'date_sent': 'desc'}).limit(10);
-  if(msg.length!=0){
-    res.send(msg)
-  }
-  else
+  let temp="qwerty"
+  module.exports=temp
+  //socket.msg=msg;
+  //console.log(socket.msg)
+  //if(msg.length!=0) res.send(msg)
+  //else
   res.sendFile(__dirname + '/html/chat.html')
 });
+
 app.post('/chat',async(req,res)=>{
   const username=req.body.username
   const user = await userModel.find({username:username});

@@ -114,11 +114,7 @@
             mc.innerHTML='<div>' + message + '</div>'
             mc.innerHTML+=temp
         })
-        //function setUsername(){
-           // var objUrlParams = new URLSearchParams(window.location.search);
-            //client.emit('newUser', objUrlParams.get("uname"))
-            //joinRoom();
-        //}
+        
         function getRoom(){
             let arr=window.location.href.split('/');
             return arr[arr.length-1]
@@ -126,7 +122,6 @@
         function joinRoom(){
             client.emit('joinroom', getRoom())
             document.getElementById("roomName").innerHTML=getRoom()
-
         }
 
         function sendMessage(){

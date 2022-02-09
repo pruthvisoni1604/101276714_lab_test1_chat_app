@@ -98,6 +98,11 @@
 
 <script>
 
+
+      function setUsername(){
+          var objUrlParams = new URLSearchParams(window.location.search);
+          client.emit('newUser', objUrlParams.get("uname"))
+      }
       function myFunction(room) {
           window.location.href="../chat/"+room;
       }
@@ -109,6 +114,7 @@
         if(objUrlParams.get('err')=="noUser"){
           alert("No User Found!")
         }
+        setUsername()
       }
 
  </script>
