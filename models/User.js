@@ -8,12 +8,12 @@ const UserSchema = new mongoose.Schema({
     lowercase: true,
     unique: true
   },
-  firstName: {
+  firstname: {
     type: String,
     trim: true,
     lowercase: true
   },
-  lastName: {
+  lastname: {
     type: String,
     trim: true,
     lowercase: true
@@ -39,6 +39,7 @@ UserSchema.post('validate', (doc) => {
 
 UserSchema.post('save', (doc) => {
   console.log('%s has been saved', doc._id);
+  console.log('done')
 });
 
 UserSchema.post('remove', (doc) => {

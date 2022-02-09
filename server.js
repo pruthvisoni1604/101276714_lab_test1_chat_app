@@ -78,6 +78,11 @@ io.on('connection', (socket) => {
 })
 
 
+app.use(
+  express.urlencoded({
+    extended: true
+  })
+)
 app.use(express.json()); // Make sure it comes back as json
 
 //TODO - Replace you Connection String here
@@ -90,11 +95,43 @@ mongoose.connect('mongodb+srv://gbc:pruthvi@sa.dubue.mongodb.net/db_f2021_comp31
   console.log('Error Mongodb connection')
 });
 
+//http://localhost:3000/signin
+app.get('/signup', async (req, res) => {
+  res.sendFile(__dirname + '/html/signup.html')
+});
 
 //http://localhost:3000/login
 app.get('/login', async (req, res) => {
-    const users = await userModel.find({});
     res.sendFile(__dirname + '/html/login.html')
+});
+app.post('/login', async (req, res) => {
+  const user = new userModel(req.body);
+  try {
+    await user.save((err) => {
+      if(err){
+        console.log("1")
+        if(err.code === 11000){
+        console.log("2")
+
+          res.sendFile(__dirname + '/html/signup.html')
+          
+          console.log("3")
+
+        }
+        res.send(err)
+        console.log("4")
+
+      }else{
+        res.sendFile(__dirname + '/html/login.html')
+        console.log("5")
+
+      }
+    });
+  } catch (err) {
+    res.status(500).send(err);
+    console.log("10")
+
+  }
 });
 
 //http://localhost:3000/
@@ -109,12 +146,23 @@ app.get('/chat/:room', async (req, res) => {
   res.sendFile(__dirname + '/html/chat.html')
 });
 
-//http://localhost:3000/signin
-app.get('/signup', async (req, res) => {
-  //const users = await userModel.find({});
-  res.sendFile(__dirname + '/html/signup.html')
+
+
+//http://localhost:3000/signedup
+app.post('/a', async (req, res) => {
+  console.log("post")
+  console.log(req.body)
+  try {
+      if(err){
+        res.send(err)
+      }else{
+        res.send("user");
+      }
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
-  
+
 //http://localhost:3000
 app.post('/', async (req, res) => {
     const user = new userModel(req.body);
