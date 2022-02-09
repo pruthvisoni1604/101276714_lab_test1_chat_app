@@ -39,6 +39,7 @@
                 right: 10px;
                 bottom: 15px;
                 width: 10%;
+                min-width: min-content;
                 font-size: 22px; 
                 padding: 10px 15px;
                 border-radius: 50px;
@@ -67,14 +68,27 @@
                 display: flex;
                 justify-content: space-around;
             }
+            #message-container{
+                width: 93%;
+                margin: auto;
+                
+            }
+            #message-container>div{
+                padding: 10px 15px;
+                margin: 15px 0px;
+                border-radius: 50px;
+                background-color: lightseagreen;
+                border-radius: 20px;
+                width: max-content;
+            }
         </style>
     </head>
-    <body onload="">
+    <body onload="joinRoom()">
         <div id = "error-container"></div>
-
-        <div id="room">
-            <i class="fa fa-arrow-left" style="font-size:36px" onclick="close()"></i>
-            <h1><b>News</b></h1>
+        <div id="room" onclick="leaveRoom()">
+            <i class="fa fa-arrow-left" style="font-size:36px"></i>
+            
+            <h1 id="roomName"><b></b></h1>
         </div>
         <div id="in">
             <input type="text" id="message" name="message" placeholder="Type here">
@@ -82,7 +96,6 @@
             <button class="Btn" type="button" name="button" onclick="sendMessage()">Send</button>
         </div>
         <div id="message-container">
-
         </div>
     </body>
     <script src = "/socket.io/socket.io.js"></script>
@@ -101,27 +114,29 @@
             mc.innerHTML='<div>' + message + '</div>'
             mc.innerHTML+=temp
         })
-        client.on('newRoomMessage',(message)=>{
-
-        })
         //function setUsername(){
            // var objUrlParams = new URLSearchParams(window.location.search);
             //client.emit('newUser', objUrlParams.get("uname"))
             //joinRoom();
         //}
-
+        function getRoom(){
+            let arr=window.location.href.split('/');
+            return arr[arr.length-1]
+        }
         function joinRoom(){
-            console.log()
-            client.emit('joinroom', 'news')
+            client.emit('joinroom', getRoom())
+            document.getElementById("roomName").innerHTML=getRoom()
+
         }
 
         function sendMessage(){
             client.emit('message', 
-            { room: 'news',
+            { room: getRoom(),
                 message: document.getElementById('message').value})
         }
 
-        function close() {
+        function leaveRoom() {
+            client.emit('leaveRoom')
             window.location.href="/";
         }
 

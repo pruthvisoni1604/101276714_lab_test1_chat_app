@@ -18,7 +18,6 @@ const io = require('socket.io')(http)
 app.use(cors()) 
 //Create user list
 users = []
-var roomName = 'test'
 
 io.on('connection', (socket) => {
   console.log('Connected ')
@@ -28,16 +27,25 @@ io.on('connection', (socket) => {
 
   //Custom message event to socket
   socket.on('message', (data) => {
-      console.log(data)
-
       if(data.room == '' || data.room==undefined){
-          
-          console.log(data.message)
           io.emit('newMessage', socket.id + ' : ' + data.message)
       }else{
-        console.log(`Room Name: ${data.room}`)
-        console.log(socket.id +' : ' + data.message)
+        console.log(data)
+        console.log(socket)
+        
         io.to(data.room).emit('newMessage', socket.id +' : ' + data.message)
+        const gm = new gmModel({from_user:socket.id,room:data.room,message:data.message});
+          try {
+            gm.save((err) => {
+              if(err){
+                console.log(err)
+              }else{
+                //res.sendFile(__dirname + '/html/login.html')
+              }
+            });
+          } catch (err) {
+            console.log(err);
+          }
       }
       //These will send to current/sending client
       //socket.emit('newMessage', data)
@@ -70,8 +78,13 @@ io.on('connection', (socket) => {
   socket.on('joinroom', (room) => {
       socket.join(room)
       roomName = room
+      socket.currentRoom = room;
   })
-
+  socket.on('leaveRoom', () =>{
+    socket.leave(socket.currentRoom);
+    socket.currentRoom = null;
+    console.log(socket.rooms);
+})
   //Disconnected
   socket.on('disconnect', () => {
       console.log(`${socket.id} disconnected`)
@@ -155,9 +168,28 @@ app.post('/', async (req, res) => {
 
 //http://localhost:3000/chat/covid
 app.get('/chat/:room', async (req, res) => {
-  //const users = await userModel.find({});
+  const room = req.params.room
+  const msg = await gmModel.find({room: room}).sort({'date_sent': 'desc'}).limit(10);
+  if(msg.length!=0){
+    res.send(msg)
+  }
+  else
   res.sendFile(__dirname + '/html/chat.html')
 });
+app.post('/chat',async(req,res)=>{
+  const username=req.body.username
+  const user = await userModel.find({username:username});
+  console.log(user)
+  if(user[0].username==username){
+    return res.redirect('/chat/'+username)
+  }
+  else{
+    return res.redirect('/?err=noUser')
+  }
+  
+
+
+})
 
 http.listen(PORT, () => {
   console.log(`Server started at ${PORT}`)

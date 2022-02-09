@@ -61,9 +61,13 @@
     h1{
         text-align: center;
     }
+    #personal{
+      display: flex;
+      justify-content: space-around;
+    }
   </style>
 </head>
-<body>
+<body onload="showErr()">
     <h1>🔥HotChat Rooms</h1>
     <hr>
     <div class="mainDiv">
@@ -79,9 +83,16 @@
           <div>
             <button type="submit" class="Btn" onclick="myFunction('nodeJs')">NodeJs</button>
           </div>
+          <div id="personal">
+            <form method="post" action="/chat">
+              <input type="text" name="username" id="username" placeholder="Enter Username">
+              <button type="submit" class="Btn" onclick="myFunction('covid')">Chat</button>
+            </form>
+            
+          </div>
 
     </div>
-    <button type="submit" class="signout" onclick="myFunction('logOut')">Log out</button>
+    <button type="submit" class="signout" onclick="close()">Log out</button>
 
 </body>
 
@@ -89,6 +100,15 @@
 
       function myFunction(room) {
           window.location.href="../chat/"+room;
+      }
+      function close(){
+        window.location.href="/";
+      }
+      function showErr(){
+        var objUrlParams = new URLSearchParams(window.location.search);
+        if(objUrlParams.get('err')=="noUser"){
+          alert("No User Found!")
+        }
       }
 
  </script>
